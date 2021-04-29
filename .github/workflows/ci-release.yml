@@ -61,4 +61,4 @@ jobs:
       run: npx github-release-notes release --override --tags ${APP_TAG}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GREN_GITHUB_TOKEN: ${{ s.grenrc.jsecrets.GITHUB_TOKEN }}
+        GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
