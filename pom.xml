@@ -198,13 +198,12 @@
         <artifactId>dependency-check-maven</artifactId>
         <version>${owasp.version}</version>
         <configuration>
-          <skip>true</skip>
           <suppressionFile>./owasp/suppressions.xml</suppressionFile>
           <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
         </configuration>
         <executions>
           <execution>
-            <id>validate</id>
+            <id>check</id>
             <phase>validate</phase>
             <goals>
               <goal>check</goal>
@@ -256,12 +255,14 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
           </execution>
           <execution>
             <id>report</id>
+            <phase>verify</phase>
             <goals>
               <goal>report</goal>
             </goals>
