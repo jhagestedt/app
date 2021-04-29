@@ -1,0 +1,54 @@
+name: ci-main
+on:
+  push:
+    branches:
+    - main
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v2
+      with:
+        java-version: 11
+        distribution: adopt
+    - name: version
+      run: >-
+        export APP_SHA=$(git rev-parse --short ${GITHUB_SHA});
+        export APP_REV=$(git rev-list --tags --max-count=1);
+        export APP_TAG=$(git describe --tags ${APP_LATEST_REV} 2> /dev/null || echo 0.0.0);
+        export APP_VERSION=${APP_LATEST_TAG}-${APP_SHA};
+    - name: debug
+      run: >-
+        echo ${APP_SHA};
+        echo ${APP_REV};
+        echo ${APP_TAG};
+        echo ${APP_VERSION};
+    - name: mvn
+      run: >-
+        mvn versions:set
+        --batch-mode
+        --file ./pom.xml
+        --settings ./settings.xml
+        --define newVersion=${APP_VERSION};
+        mvn clean verify
+        --batch-mode
+        --file ./pom.xml
+        --settings ./settings.xml
+        --define app.artifacts.username=${APP_ARTIFACTS_USERNAME}
+        --define app.artifacts.password=${APP_ARTIFACTS_PASSWORD};
+      env:
+        APP_ARTIFACTS_USERNAME: todo
+        APP_ARTIFACTS_PASSWORD: todo
+    - name: docker
+      run: >-
+        echo ${GITHUB_TOKEN} |
+        docker login docker.pkg.github.com
+        --username ${GITHUB_ACTOR}
+        --password-stdin;
+        docker build .
+        --file Dockerfile
+        --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/app:${APP_VERSION};
+        docker push docker.pkg.github.com/${GITHUB_REPOSITORY}/app:${APP_VERSION};
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
