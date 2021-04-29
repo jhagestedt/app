@@ -46,7 +46,7 @@
     <github.organization>jhagestedt</github.organization>
     <github.project>app</github.project>
     <!-- sonar -->
-    <sonar.organization>app</sonar.organization>
+    <sonar.organization>jhagestedt</sonar.organization>
     <sonar.projectKey>${sonar.organization}_${project.artifactId}</sonar.projectKey>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.coverage.exclusions>
@@ -198,13 +198,12 @@
         <artifactId>dependency-check-maven</artifactId>
         <version>${owasp.version}</version>
         <configuration>
-          <skip>true</skip>
           <suppressionFile>./owasp/suppressions.xml</suppressionFile>
           <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
         </configuration>
         <executions>
           <execution>
-            <id>validate</id>
+            <id>check</id>
             <phase>validate</phase>
             <goals>
               <goal>check</goal>
@@ -233,8 +232,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
-          <configLocation>checkstyle.xml</configLocation>
-          <excludes>target/**/*</excludes>
+          <configLocation>./checkstyle.xml</configLocation>
+          <excludes>./target/**/*</excludes>
           <consoleOutput>true</consoleOutput>
           <failsOnError>true</failsOnError>
           <violationSeverity>warning</violationSeverity>
@@ -256,12 +255,14 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
           </execution>
           <execution>
             <id>report</id>
+            <phase>verify</phase>
             <goals>
               <goal>report</goal>
             </goals>

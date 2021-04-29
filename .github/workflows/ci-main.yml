@@ -45,7 +45,7 @@ jobs:
     - name: docker
       run: >-
         echo "${APP_PACKAGES_PASSWORD}" |
-        docker login ${APP_PACKAGES_URL}
+        docker login "${APP_PACKAGES_URL}"
         --username "${APP_PACKAGES_USERNAME}"
         --password-stdin;
         docker build .
