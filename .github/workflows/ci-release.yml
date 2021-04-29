@@ -4,7 +4,7 @@ on:
     types:
     - created
 jobs:
-  build:
+  release:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/setup-java@v2
@@ -12,6 +12,8 @@ jobs:
         java-version: 11
         distribution: adopt
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: actions/cache@v2
       with:
         path: |
@@ -57,8 +59,3 @@ jobs:
         APP_PACKAGES_URL: docker.pkg.github.com/${{ github.repository }}/container
         APP_PACKAGES_USERNAME: ${{ github.actor }}
         APP_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-    - name: changelog
-      run: npx github-release-notes release --override --tags ${APP_TAG}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
