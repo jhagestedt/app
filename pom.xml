@@ -198,6 +198,7 @@
         <artifactId>dependency-check-maven</artifactId>
         <version>${owasp.version}</version>
         <configuration>
+          <skip>true</skip>
           <suppressionFile>./owasp/suppressions.xml</suppressionFile>
           <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
         </configuration>
@@ -232,8 +233,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
-          <configLocation>checkstyle.xml</configLocation>
-          <excludes>target/**/*</excludes>
+          <configLocation>./checkstyle.xml</configLocation>
+          <excludes>./target/**/*</excludes>
           <consoleOutput>true</consoleOutput>
           <failsOnError>true</failsOnError>
           <violationSeverity>warning</violationSeverity>
