@@ -59,3 +59,8 @@ jobs:
         APP_PACKAGES_URL: docker.pkg.github.com/${{ github.repository }}/container
         APP_PACKAGES_USERNAME: ${{ github.actor }}
         APP_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+    - name: openapi
+      uses: actions/upload-artifact@v2
+      with:
+        name: openapi.json
+        path: ./target/openapi.json
