@@ -7,11 +7,16 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
     - uses: actions/setup-java@v2
       with:
         java-version: 11
         distribution: adopt
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.m2/repository
+        key: ${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
     - name: version
       run: >-
         APP_SHA=$(git rev-parse --short ${GITHUB_SHA});
@@ -44,10 +49,10 @@ jobs:
         --username "${APP_PACKAGES_USERNAME}"
         --password-stdin;
         docker build .
-        --file Dockerfile
-        --tag "${APP_PACKAGES_REPOSITORY}:${APP_VERSION}";
-        docker push "${APP_PACKAGES_REPOSITORY}:${APP_VERSION}";
+        --file ./Dockerfile
+        --tag "${APP_PACKAGES_URL}:${APP_VERSION}";
+        docker push "${APP_PACKAGES_URL}:${APP_VERSION}";
       env:
-        APP_PACKAGES_REPOSITORY: docker.pkg.github.com/${{ github.repository }}
+        APP_PACKAGES_URL: docker.pkg.github.com/${{ github.repository }}/container
         APP_PACKAGES_USERNAME: ${{ github.actor }}
         APP_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
