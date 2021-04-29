@@ -18,6 +18,10 @@ jobs:
         export APP_REV=$(git rev-list --tags --max-count=1);
         export APP_TAG=$(git describe --tags ${APP_LATEST_REV} 2> /dev/null || echo 0.0.0);
         export APP_VERSION=${APP_LATEST_TAG}-${APP_SHA};
+        echo ${APP_SHA};
+        echo ${APP_REV};
+        echo ${APP_TAG};
+        echo ${APP_VERSION};
     - name: debug
       run: >-
         echo ${APP_SHA};
