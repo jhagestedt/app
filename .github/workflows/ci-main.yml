@@ -35,17 +35,19 @@ jobs:
         --define app.packages.username="${APP_PACKAGES_USERNAME}"
         --define app.packages.password="${APP_PACKAGES_PASSWORD}";
       env:
-        APP_PACKAGES_USERNAME: todo
-        APP_PACKAGES_PASSWORD: todo
+        APP_PACKAGES_USERNAME: ${{ env.GITHUB_ACTOR }}
+        APP_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
     - name: docker
       run: >-
-        echo "${GITHUB_TOKEN}" |
+        echo "${APP_REGISTRY_PASSWORD}" |
         docker login docker.pkg.github.com
-        --username "${GITHUB_ACTOR}"
+        --username "${APP_REGISTRY_USERNAME}"
         --password-stdin;
         docker build .
         --file Dockerfile
-        --tag "docker.pkg.github.com/${GITHUB_REPOSITORY}/app:${APP_VERSION}";
-        docker push "docker.pkg.github.com/${GITHUB_REPOSITORY}/app:${APP_VERSION}";
+        --tag "${APP_REGISTRY_REPOSITORY}:${APP_VERSION}";
+        docker push "${APP_REGISTRY_REPOSITORY}:${APP_VERSION}";
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        APP_REGISTRY_REPOSITORY: docker.pkg.github.com/${{ env.GITHUB_REPOSITORY }}
+        APP_REGISTRY_USERNAME: ${{ env.GITHUB_ACTOR }}
+        APP_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
