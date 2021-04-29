@@ -14,14 +14,13 @@ jobs:
         distribution: adopt
     - name: version
       run: >-
-        export APP_SHA=$(git rev-parse --short ${GITHUB_SHA});
-        export APP_REV=$(git rev-list --tags --max-count=1);
-        export APP_TAG=$(git describe --tags ${APP_LATEST_REV} 2> /dev/null || echo 0.0.0);
-        export APP_VERSION=${APP_LATEST_TAG}-${APP_SHA};
-        echo ${APP_SHA};
-        echo ${APP_REV};
-        echo ${APP_TAG};
-        echo ${APP_VERSION};
+        APP_SHA=$(git rev-parse --short ${GITHUB_SHA});
+        APP_REV=$(git rev-list --tags --max-count=1);
+        APP_TAG=$(git describe --tags ${APP_REV} 2> /dev/null || echo 0.0.0);
+        APP_VERSION=${APP_TAG}-${APP_SHA};
+        echo ::set-output name=APP_SHA::${APP_SHA};
+        echo ::set-output name=APP_TAG::${APP_TAG};
+        echo ::set-output name=APP_VERSION::${APP_VERSION};
     - name: debug
       run: >-
         echo ${APP_SHA};
