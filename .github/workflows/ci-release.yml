@@ -60,7 +60,7 @@ jobs:
         APP_PACKAGES_USERNAME: ${{ github.actor }}
         APP_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
     - name: openapi
-      uses: actions/upload-artifact@v2
-      with:
-        name: openapi.json
-        path: ./target/openapi.json
+      run: >-
+        gh release upload ${APP_TAG} --clobber ./target/openapi.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
