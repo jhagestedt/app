@@ -69,7 +69,7 @@ jobs:
         curl -L -o /tmp/cf.tgz "https://packages.cloudfoundry.org/stable?release=${CF_RELEASE}&version=${CF_VERSION}"
         tar -xzvf /tmp/cf.tgz -C /usr/local/bin && rm -f /tmp/cf.tgz
       env:
-        CF_VERSION: 7.20.0
+        CF_VERSION: 7.2.0
         CF_RELEASE: linux64-binary
     - name: cf push
       run: |-
