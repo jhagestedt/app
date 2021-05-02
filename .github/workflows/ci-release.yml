@@ -4,7 +4,7 @@ on:
     types:
     - created
 jobs:
-  release:
+  build:
     runs-on: ubuntu-20.04
     env:
       APP_VERSION: ${{ github.event.release.tag_name }}
