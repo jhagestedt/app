@@ -54,7 +54,7 @@ jobs:
         APP_PACKAGES_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
     - name: openapi
       run: |-
-        gh release upload ${APP_TAG} --clobber ./target/openapi.json
+        gh release upload ${APP_VERSION} --clobber ./target/openapi.json
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy:
